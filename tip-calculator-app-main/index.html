@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <title>Frontend Mentor | Tip calculator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+    body {
+      background-color: hsl(185, 41%, 84%);
+      font-family: 'Space Mono', monospace;
+    }
+    div.logo-header {
+      text-align: center;
+    }
+    div.tip-calculator {
+      width: 80%;
+      background-color: #FFF;
+      margin: auto;
+      border-radius: 10px;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+    }
+    .form {
+      margin-bottom: 25px;
+    }
+    form .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    form .form-group input[type=number], form .form-group .tip-buttons-container button {
+      font-size: 24px;
+    }
+    form .form-group input[type=number] {
+      height: 36px;
+      border-radius: 5px;
+      border: 1px solid black;
+      text-align: right;
+      background-color: hsl(189, 41%, 97%);
+      font-family: inherit;
+    }
+    form .form-group input[type=number]:focus {
+      outline: none;
+      border-color: hsl(172, 67%, 45%);
+    }
+    form .form-group input[type=number].invalid {
+      outline: none;
+      border-color: red;
+    }
+    form .form-group img {
+      position: absolute;
+      padding: 32px 0px 0px 8px;
+      min-width: 16px;
+    }
+    form .form-group .tip-buttons-container button {
+      width: 47%;
+    }
+    form .form-group .tip-buttons-container #customTip {
+      width: 46%;
+      position: relative;
+      top: 0px;
+      height: 46px;
+    }
+    div.tip-calculator .tip-result {
+      background-color: hsl(183, 100%, 15%);
+      border-radius: 5px;
+      padding: 20px;
+    }
+    .tip-result .display {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 10px;
+    }
+    .display p span {
+      color: #FFF;
+    }
+    .display p:first-of-type{
+      width: 30%;
+      color: hsl(184, 14%, 56%);
+    }
+    .display p:nth-of-type(2){
+      width: 70%;
+      font-size: 30px;
+      margin: 5px;
+      text-align: right;
+      color: hsl(172, 67%, 45%);
+    }
+
+    /*buttons styling*/
+    .tip-buttons {
+      padding: 5px;
+      margin-bottom: 10px;
+      background-color: hsl(183, 100%, 15%);
+      color: #FFF;
+      font-family: inherit;
+    }
+    .active {
+      background-color: hsl(184, 14%, 56%);
+      color: black;
+    }
+    #btn-reset {
+      width: 100%;
+      padding: 10px;
+      background: hsl(172, 67%, 45%);
+      font-family: inherit;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .tip-buttons, #btn-reset {
+      border: 0px solid;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /*Span styling*/
+    .error {
+      color: red;
+      float: right;
+      display: none;
+    }
+
+    /*Responsive styling*/
+    @media screen and (min-width:769px) {
+      div.tip-calculator {
+        flex-direction: row;
+      }
+      .form, .tip-result {
+        width: 50%;
+      }
+      .form {
+        margin-right: 20px;
+      }
+      form .form-group .tip-buttons-container button {
+        width: 30%;
+      }
+      form .form-group .tip-buttons-container #customTip {
+        width: 29% !important;
+        height: 42px;
+        top: 0px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="logo-header">
+    <img src="./images/logo.svg" alt="logo">
+  </div>
+
+  <div class="tip-calculator">
+    <div class="form">
+      <form class="tip-calculator">
+        <div class="form-group">
+          <label for="bill">Bill </label>
+          <input type="number" name="bill" id="bill" value="0" placeholder="0">
+          <img src="./images/icon-dollar.svg" alt="icon-dollar"/>
+        </div>
+        <div class="form-group">
+          <label for="tip">Select tip % </label>
+          <div class="tip-buttons-container">
+            <button type="button" class="tip-buttons">5%</button>
+            <button type="button" class="tip-buttons">10%</button>
+            <button type="button" class="tip-buttons">15%</button>
+            <button type="button" class="tip-buttons">25%</button>
+            <button type="button" class="tip-buttons">50%</button>
+            <input type="number" id="customTip" name="customTip" placeholder="Custom">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="people">Number of People <span class="error">Can't be zero</span></label>
+          <input type="number" name="people" id="people" value="0" placeholder="0">
+          <img src="./images/icon-person.svg" alt="icon-person">
+        </div>
+      </form>
+    </div>
+    <div class="tip-result">
+      <div class="display">
+        <p><span>Tip Amount</span> / person</p>
+        <p>$0.00</p>
+      </div>
+      <div class="display">
+        <p><span>Total</span> / person</p>
+        <p>$0.00</p>
+      </div>
+      <button id="btn-reset">Reset</button>
+    </div>  
+  </div>
+  
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Robin Medeiros Silvério</a>.
+  </div>
+</body>
+<script>
+
+  let inputBill = document.getElementById('bill');
+  let tipButtons = document.getElementsByClassName('tip-buttons');
+  let customInputTipRate = document.getElementById('customTip');
+  let inputPeople = document.getElementById('people');
+  let firstDisplay = document.getElementsByClassName('tip-result')[0].getElementsByClassName('display')[0].getElementsByTagName('p')[1];
+  let secondDisplay = document.getElementsByClassName('tip-result')[0].getElementsByClassName('display')[1].getElementsByTagName('p')[1];
+  let btnReset = document.getElementById('btn-reset');
+
+  let tipRate = 0;
+  let tipAmountPerPerson = 0.00
+  let totalPerPerson = 0.00  
+
+  // Load component
+  window.onload = () => {
+    updateResult();
+  };
+
+  for (const tipButton of tipButtons) {
+    tipButton.addEventListener('click', (e) => {
+      clearAllActiveStatesTipButtons();
+      e.target.classList.add('active');
+      tipRate = e.target.textContent.substring(0, e.target.textContent.length - 1);
+      updateResult();
+    });
+  }
+
+  customInputTipRate.onkeyup = (e) => {
+    tipRate = parseInt(e.target.value);
+    updateResult();
+  };
+
+  btnReset.addEventListener('click', () => {
+    clearAllActiveStatesTipButtons();
+    clearAllInputs();
+  });
+
+  inputBill.onkeyup = (e) => {
+    if (isInputPeopleInvalid()) {
+      invalidateInputField(inputPeople);
+    }
+    updateResult();
+  };
+
+  inputPeople.onkeyup = (e) => {
+    if (e.target.value <= 0) {
+      invalidateInputField(e.target);
+    } else {
+      setInputFieldToNormalState(e.target);
+    }
+    updateResult();
+  };
+
+  function invalidateInputField(paramElement) {
+    document.getElementsByClassName('error')[0].style.display='block';
+    paramElement.classList.add('invalid');
+  }
+
+  function setInputFieldToNormalState(paramElement) {
+    document.getElementsByClassName('error')[0].style.display='none';
+    paramElement.classList.remove('invalid');
+  }
+
+  function updateResult() {
+    firstDisplay.textContent = `$${calculateTipPerPerson().toFixed(2)}`;
+    secondDisplay.textContent = `$${calculateBillPerPerson().toFixed(2)}`;
+  }
+
+  function calculateTipPerPerson() {
+
+    let bill = parseFloat(inputBill.value);
+    let amountOfPeople = parseInt(inputPeople.value);
+
+    return (!isInputPeopleInvalid() && !isInputBillInvalid()) ? (bill * (tipRate / 100)) / amountOfPeople : 0.00;
+  }
+
+  function calculateBillPerPerson(){
+
+    let bill = parseFloat(inputBill.value);
+    let amountOfPeople = parseInt(inputPeople.value);
+
+    return (!isInputPeopleInvalid() && !isInputBillInvalid()) ? bill / amountOfPeople + calculateTipPerPerson() : 0.00;
+  }
+
+  function isInputBillInvalid() {
+    return inputBill.value <= 0;
+  }
+  
+  function isInputPeopleInvalid() {
+    return inputPeople.value <= 0;
+  }
+
+  function isCustomTipInvalid() {
+    return tipRate < 0;
+  }
+
+  function clearAllActiveStatesTipButtons() {
+    Array.from(document.querySelectorAll('.tip-buttons.active')).forEach(activeButton => {
+      activeButton.classList.remove('active');
+    });
+  }
+
+  function clearAllInputs() {
+    inputBill.value = 0;
+    inputPeople.value = 0;
+    tipRate = 0;
+    updateResult();
+  }
+
+</script>
+</html>
